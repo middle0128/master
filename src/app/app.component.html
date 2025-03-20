@@ -1,0 +1,76 @@
+<!-- app.component.html -->
+<div class="game-container">
+  <div class="game-header">
+    <h1>高級貪吃蛇</h1>
+    <div class="score-container">
+      <div class="score">分數: {{score}}</div>
+      <div class="high-score">最高分: {{highScore}}</div>
+    </div>
+  </div>
+
+  <div class="game-area" tabindex="0" (keydown)="changeDirection($event)" #gameArea>
+    <!-- 蛇身 -->
+    <div class="snake-segment" *ngFor="let segment of snakeSegments; let i = index"
+         [style.left.px]="segment.x"
+         [style.top.px]="segment.y"
+         [style.background-color]="getSnakeSegmentColor(i)">
+    </div>
+
+    <!-- 食物 -->
+    <div class="food" [style.left.px]="food.x" [style.top.px]="food.y"></div>
+
+    <!-- 道具 -->
+    <div class="power-up" *ngFor="let powerUp of powerUps"
+         [style.left.px]="powerUp.x"
+         [style.top.px]="powerUp.y"
+         [style.background-color]="getPowerUpColor(powerUp.type)">
+    </div>
+
+    <!-- 敵人 -->
+    <div class="enemy" *ngFor="let enemy of enemies"
+         [style.left.px]="enemy.x"
+         [style.top.px]="enemy.y">
+    </div>
+
+    <!-- 活動道具顯示 -->
+    <div class="active-power-ups" *ngIf="activePowerUps.length > 0">
+      <div class="power-up-indicator" *ngFor="let powerUp of activePowerUps"
+           [style.background-color]="getPowerUpColor(powerUp.type)">
+        {{powerUp.duration.toFixed(1)}}s
+      </div>
+    </div>
+  </div>
+
+  <div class="game-controls">
+    <button (click)="startGame()" [disabled]="gameRunning">開始遊戲</button>
+    <button (click)="togglePause()">{{ gameRunning ? '暫停' : '繼續' }}</button>
+  </div>
+
+  <div class="game-instructions">
+    <h3>遊戲說明</h3>
+    <p>使用 ↑↓←→ 方向鍵控制蛇移動</p>
+    <p>空格鍵暫停/繼續</p>
+    <p>R 鍵重新開始</p>
+    <h3>道具說明</h3>
+    <div class="power-up-legend">
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #ff5722;"></div>
+        <div class="legend-text">加速</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #2196f3;"></div>
+        <div class="legend-text">護盾</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #4caf50;"></div>
+        <div class="legend-text">分數加倍</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #9c27b0;"></div>
+        <div class="legend-text">慢動作</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- app.component.scss -->
